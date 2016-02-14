@@ -24,7 +24,7 @@ class LogStash::Filters::Hashid < LogStash::Filters::Base
 
   # If full hash generated is not to be used, this parameter specifies how many bytes to use
   # If not specified, the full hash will be used
-  config :hash_bytes_used, :validate => :integer
+  config :hash_bytes_used, :validate => :number
 
   # Use the timestamp to generate an ID prefix
   config :timestamp_prefix, :validate => :boolean, :default => true
@@ -32,8 +32,6 @@ class LogStash::Filters::Hashid < LogStash::Filters::Base
   def register
     # convert to symbol for faster comparisons
     @method = @method.to_sym
-
-    class << self; alias_method :anonymize, :anonymize_openssl; end
     @digest = select_digest(@method)
   end
 
@@ -44,6 +42,8 @@ class LogStash::Filters::Hashid < LogStash::Filters::Base
       data << "|#{k}|#{event[k]}"
     end
 
+print "DATA: " + data + "\n"
+
     hash = OpenSSL::HMAC.digest(@digest, @key, data)
 
     if !@hash_bytes_used.nil? && @hash_bytes_used > 0 && hash.length > @hash_bytes_used
@@ -51,15 +51,20 @@ class LogStash::Filters::Hashid < LogStash::Filters::Base
     end
 
     if @timestamp_prefix
-      epoch = event['@timestamp'].to_i
-      epoch_bin = epoch.to_s(2).split('').map { |x| x.to_i }
+      epoch = event["@timestamp"].to_i
+      epoch_array = []
+      epoch_array.push(epoch >> 24)
+      epoch_array.push((epoch >> 16) % 256)
+      epoch_array.push((epoch >> 8) % 256)
+      epoch_array.push(epoch % 256)
+      epoch_bin = epoch_array.pack('CCCC')
     else
       epoch_bin = ""
     end
 
     binary_id = epoch_bin + hash
 
-    event[@target] = Base64.strict_encode64(binary_id).force_encoding(Encoding::UTF_8)
+    event[@target] = Base64.strict_encode64(binary_id).force_encoding(Encoding::UTF_8).tr('=','')
   end
 
   def select_digest(method)
