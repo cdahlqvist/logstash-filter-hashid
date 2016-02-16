@@ -16,7 +16,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == 'Q1nsJNndnZbJCUdpESyaQw'
+      insist { subject["hashid"] } == 'Fpbg8CbSbOQ81JSd3HmPFk'
     end
   end
 
@@ -33,7 +33,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == '2d2dlskJR2kRLJpD'
+      insist { subject["hashid"] } == 'qSqS_gZ8GqZGA8d2'
     end
   end
 
@@ -49,7 +49,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == '4Z0cdm66w+ybeEmJ2FNJQk+Ozo8'
+      insist { subject["hashid"] } == 'sOoRSauukymQT3a8q4C8FZyDncw'
     end
   end
 
@@ -66,7 +66,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == 'm3hJidhTSUJPjs6P'
+      insist { subject["hashid"] } == 'arW8XSWIHJ8EYguE'
     end
   end
 
@@ -82,7 +82,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == 'fkJYY49AW4WvgIdHPxVV+XRli7DIFibPlAzc7AfYsyE'
+      insist { subject["hashid"] } == 'UZ8NNsx-LsLjV7S6ElKKyMG_Xv274XQE_-nRv-UNgm3'
     end
   end
 
@@ -99,7 +99,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == 'yBYmz5QM3OwH2LMh'
+      insist { subject["hashid"] } == 'm0NantFBrDk6qABW'
     end
   end
 
@@ -115,7 +115,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == '67pMQGQreLAz4lZ6HbheeV4yZNSJeIvHHKC53EYIO5kxLqOd7m8threLV88U2KoD'
+      insist { subject["hashid"] } == 'uvdBF5FfTA-ns_Ou6QWTTKsmOCH8T7j6691tr3N7DtZlAeDSvawhWfTAKwwJq9c2'
     end
   end
 
@@ -132,7 +132,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == '7m8threLV88U2KoD'
+      insist { subject["hashid"] } == 'vawhWfTAKwwJq9c2'
     end
   end
 
@@ -148,7 +148,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == 'ZOf6aUmqa8U61Yh1Cq9pkUhc3/CmWLe53OB+/Z3gMoqKtfwt5hDHHNFpvvw1Fw2WgfKW5xatBTq3yZsU1U9Kgg'
+      insist { subject["hashid"] } == 'ODUuPJaePwJupNWp1exdZJWRrz1aLATtrD0yzOrVBce9hUkhtW266C4djjkp4kqLVU9LtlPh0IermOgJpJx9VV'
     end
   end
 
@@ -165,7 +165,7 @@ describe LogStash::Filters::Hashid do
     CONFIG
 
     sample("message" => "testmessage") do
-      insist { subject["hashid"] } == 'Fq0FOrfJmxTVT0qC'
+      insist { subject["hashid"] } == '4eo4DfU8alIKIoe1'
     end
   end
 
@@ -184,7 +184,7 @@ describe LogStash::Filters::Hashid do
       CONFIG
 
       sample("@timestamp" => epoch_time, "message" => "testmessage") do
-        insist { subject["hashid"] } == 'VoXdoENZ7CTZ3Z2WyQlHaREsmkM'
+        insist { subject["hashid"] } == 'KcMSc3COv1IOrOqLmF_6PG3gaZB'
       end
     end
 
@@ -200,7 +200,7 @@ describe LogStash::Filters::Hashid do
       CONFIG
 
       sample("@timestamp" => epoch_time, "part1" => "test", "part2" => "message") do
-        insist { subject["hashid"] } == 'VoXdoAJye/IGBcaITA1N6mqFfH0'
+        insist { subject["hashid"] } == 'KcMSc-8mTz750RP7I-pCuae4U6o'
       end
     end
 
@@ -216,7 +216,7 @@ describe LogStash::Filters::Hashid do
       CONFIG
 
       sample("@timestamp" => epoch_time, "part2" => "message", "part1" => "test") do
-        insist { subject["hashid"] } == 'VoXdoAJye/IGBcaITA1N6mqFfH0'
+        insist { subject["hashid"] } == 'KcMSc-8mTz750RP7I-pCuae4U6o'
       end
     end
 
@@ -232,7 +232,7 @@ describe LogStash::Filters::Hashid do
       CONFIG
 
       sample("@timestamp" => epoch_time, "message" => "testmessage") do
-        insist { subject["hashid"] } == 'VoXdoHTcOT2UXfHgYC9BeV5DrT0'
+        insist { subject["hashid"] } == 'KcMSc6IRDIqJMU6VN1x0TKt2fIo'
       end
     end
 
@@ -249,7 +249,7 @@ describe LogStash::Filters::Hashid do
       CONFIG
 
       sample("@timestamp" => epoch_time, "message" => "testmessage") do
-        insist { subject["hashid"] } == 'VoXdoNndnZbJCUdpESyaQw'
+        insist { subject["hashid"] } == 'KcMScCbSbOQ81JSd3HmPFk'
       end
     end
 
@@ -267,7 +267,7 @@ describe LogStash::Filters::Hashid do
       CONFIG
 
       sample("ts" => epoch_time, "message" => "testmessage") do
-        insist { subject["hashid"] } == 'VoXdoNndnZbJCUdpESyaQw'
+        insist { subject["hashid"] } == 'KcMScCbSbOQ81JSd3HmPFk'
       end
     end
   end

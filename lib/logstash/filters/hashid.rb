@@ -1,10 +1,9 @@
 # encoding: utf-8
 require "logstash/filters/base"
 require "logstash/namespace"
-require "base64"
 require "openssl"
 
-# This filter allow you to generate predictable, base64 encoded hashed keys 
+# This filter allow you to generate predictable, string encoded hashed keys 
 # based om event contents and timestamp. This can be used to avoid getting 
 # duplicate records indexed into Elasticsearch.
 #
@@ -68,14 +67,15 @@ class LogStash::Filters::Hashid < LogStash::Filters::Base
       epoch_array.push((epoch >> 16) % 256)
       epoch_array.push((epoch >> 8) % 256)
       epoch_array.push(epoch % 256)
-      epoch_bin = epoch_array.pack('CCCC')
+      #epoch_bin = epoch_array.pack('CCCC')
     else
-      epoch_bin = ""
+      #epoch_bin = ""
+      epoch_array = []
     end
 
-    binary_id = epoch_bin + hash
+    binary_array = epoch_array + hash.unpack('C*')
 
-    event[@target] = Base64.strict_encode64(binary_id).force_encoding(Encoding::UTF_8).tr('=','')
+    event[@target] = encode_to_sortable_string(binary_array).force_encoding(Encoding::UTF_8)
   end
 
   def select_digest(method)
@@ -94,5 +94,31 @@ class LogStash::Filters::Hashid < LogStash::Filters::Base
       # we really should never get here
       raise(LogStash::ConfigurationError, "Unknown digest for method=#{method.to_s}")
     end
+  end
+
+  def encode_to_sortable_string(data)
+    chars = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz'
+    encoded_string = ""
+    offset = 0
+    while offset < data.length do
+      buf = data[offset,3]
+      offset+=3
+
+      pad = '' # padding for this group of 4 characters
+      while buf.length < 3
+        buf.push(0)
+        pad << '='
+      end
+
+      group24 = (buf[0] << 16) | (buf[1] << 8) | buf[2] # current 3 bytes as a 24 bit value
+      encoded = chars[(group24 >> 18) & 0x3f, 1] # read the 24 bit value 6 bits at a time
+      encoded << chars[(group24 >> 12) & 0x3f, 1]
+      encoded << chars[(group24 >> 6) & 0x3f, 1]
+      encoded << chars[(group24 >> 0) & 0x3f, 1]
+      encoded[4 - pad.length, pad.length] = pad # add the padding
+      encoded_string << encoded
+    end
+
+    encoded_string.tr('=','')
   end
 end
