@@ -60,6 +60,7 @@ class LogStash::Filters::Hashid < LogStash::Filters::Base
       hash = hash[(-1 * @hash_bytes_used), @hash_bytes_used]
     end
 
+    epoch_array = []
     if @timestamp_prefix
       epoch = event[@timestamp_field].to_i
       epoch_array = []
@@ -67,10 +68,6 @@ class LogStash::Filters::Hashid < LogStash::Filters::Base
       epoch_array.push((epoch >> 16) % 256)
       epoch_array.push((epoch >> 8) % 256)
       epoch_array.push(epoch % 256)
-      #epoch_bin = epoch_array.pack('CCCC')
-    else
-      #epoch_bin = ""
-      epoch_array = []
     end
 
     binary_array = epoch_array + hash.unpack('C*')
